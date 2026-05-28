@@ -91,33 +91,57 @@ const FACULTY = [
 {name:'Dr. Saliha Bathool',dept:'Cybersecurity',c:'#5F5E5A',i:'SB',n:4}
 ];
 
-const PROJECT_NAMES = [
-'802.1X Port-Based Authentication with RADIUS',
-'A Q-Learning Based Intrusion-Resilient Routing Protocol',
-'AI-Based Cyber Crime Prediction System',
-'AI-Based Network Traffic Anomaly Detection',
-'AI-Driven Adaptive Intrusion Detection Framework',
-'AI-Driven Cloud Security Threat Detection System',
-'Adversarial Attack Detection Framework',
-'An Intelligent Multi-Layered Phishing Detection',
-'NIST PQC Standards Benchmarking',
-'Blockchain-Based Unified Digital Identity System',
-'Prompt Injection Payloads Detection System',
-'Framework for detecting Tool Poisoning/MCP attacks',
-'Secure prompt validation & response filtering model',
-'Defense mechanism for malicious instructions detection',
-'Encrypted Traffic Fingerprinting for Malware',
-'Ethical Hacking Simulation Framework',
-'Honeypot Deployment & Attacker Profiling',
-'AI-Driven Cloud Security Threat Detection System',
-'Insider Threat Detection Using Behavioral Analytics',
-'Intelligent Cloud Security Misconfiguration Detection',
-'Intelligent QR Code Phishing Detection using AI',
-'LLM-Assisted Digital Forensics Investigation',
-'LLM-Assisted Malware Reverse Engineering',
-'Network Traffic Anomaly Detection & SIEM Integration',
-'Neural Network-Assisted Key Rate Estimation',
-'Secure Routing Protocol for IoT Networks'
+{ id: 1, name: "802.1X Port-Based Authentication with RADIUS on Wired & Wireless", mentor: "Sheba Pari N", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 2, name: "A Q-Learning Based Intrusion-Resilient and Privacy-Aware Routing Protocol for IoT Mesh Networks", mentor: "Dr. Ishita Chakraborty", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 3, name: "AI-Based Cyber Crime Prediction System", mentor: "Dr. Saliha Bathool", students: 20, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 4, name: "AI-Based Network Traffic Anomaly Detection System", mentor: "Evlin Vidyu Latha P", students: 17, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 5, name: "AI-Driven Adaptive Intrusion Detection and Network Threat Intelligence Framework", mentor: "Sunilkumar J", students: 7, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 6, name: "AI-Driven Cloud Security Threat Detection System", mentor: "Evlin Vidyu Latha P", students: 8, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 7, name: "Adversarial Attack Detection Framework using Machine Learning", mentor: "Dr Basavaraj Patil", students: 4, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 8, name: "An Intelligent Multi-Layered Phishing Detection Framework using Machine Learning and Behavioral Analysis", mentor: "Sunilkumar J", students: 11, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 9, name: "Benchmarking NIST PQC Standards on Constrained IoT Devices", mentor: "A V Amruthesh Bhat", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 10, name: "Blockchain-Based Unified Digital Identity System", mentor: "J. Cynthia", students: 8, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 11, name: "AI-Driven Prompt Injection Payload Detection System", mentor: "Dr.Sarasvathi V", students: 6, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 12, name: "Design a secure framework for detecting, preventing, and mitigating Tool Poisoning/MCP attacks in agentic AI systems", mentor: "Dr.Sarasvathi V", students: 4, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 13, name: "Develop a secure prompt validation and response filtering model to protect LLM applications from safety bypass and policy evasion attacks", mentor: "Dr.Sarasvathi V", students: 4, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 14, name: "Develop an intelligent defense mechanism to identify and block malicious instructions embedded in prompts, documents, emails, PDFs, and websites", mentor: "Dr.Sarasvathi V", students: 8, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 15, name: "Encrypted Traffic Fingerprinting for Malware Family Detection using Machine Learning", mentor: "Sunilkumar J", students: 6, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 16, name: "Ethical Hacking Simulation Framework for Cybersecurity Education", mentor: "Dr Basavaraj Patil", students: 10, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 17, name: "Honeypot Deployment & Attacker Profiling Using Kali Linux as the Red Team", mentor: "Sheba Pari N", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 18, name: "Hybrid Cryptography Framework for Quantum-Safe Secure Communication", mentor: "Dr. Manish Kumar", students: 5, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 19, name: "Insider Threat Detection Using Behavioral Analytics", mentor: "Dr Basavaraj Patil", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 20, name: "Intelligent Cloud Security Misconfiguration Detection and Risk Assessment Framework for Multi-Cloud Environments", mentor: "Sunilkumar J", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 21, name: "Intelligent QR Code Phishing Detection using AI and Threat Intelligence", mentor: "Dr. Manish Kumar", students: 12, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 22, name: "LLM-Assisted Digital Forensics Investigation and Evidence Correlation System", mentor: "Dr. Manish Kumar", students: 9, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 23, name: "LLM-Assisted Malware Reverse Engineering and Explainable Threat Report Generation", mentor: "Dr. Manish Kumar", students: 17, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 24, name: "Network Traffic Anomaly Detection & SIEM Integration for Campus LAN", mentor: "Sheba Pari N", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 25, name: "Neural Network-Assisted Key Rate Estimation in Noisy QKD Channels", mentor: "A V Amruthesh Bhat", students: 3, startDate: "2024-01-15", endDate: "2024-05-31" },
+
+{ id: 26, name: "Secure Routing Protocol for IoT Networks Using Lightweight Cryptography", mentor: "Dr. Ishita Chakraborty", students: 4, startDate: "2024-01-15", endDate: "2024-05-31" }
 ];
 
 const STATUSES = ['On Track','On Track','On Track','On Track','Needs Review','Delayed'];
@@ -695,7 +719,7 @@ function buildDashboard() {
   document.getElementById('qs-late').textContent    = late;
 
   document.getElementById('dash-metrics').innerHTML = `
-    <div class="metric-card"><div class="metric-label">Total Projects</div><div class="metric-val c-blue">40</div><div class="metric-sub">Across 8 domains</div></div>
+    <div class="metric-card"><div class="metric-label">Total Projects</div><div class="metric-val c-blue">26</div><div class="metric-sub">Across domains</div></div>
     <div class="metric-card"><div class="metric-label">On Track</div><div class="metric-val c-green">${onTrack}</div><div class="metric-sub">${Math.round(onTrack/40*100)}% healthy ratio</div></div>
     <div class="metric-card"><div class="metric-label">Submitted Today</div><div class="metric-val c-amber">${subToday}</div><div class="metric-sub">${40-subToday} pending</div></div>
     <div class="metric-card"><div class="metric-label">Avg Completion</div><div class="metric-val">58%</div><div class="metric-sub">Target 55% ✓ Above target</div></div>
