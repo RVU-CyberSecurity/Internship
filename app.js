@@ -834,7 +834,7 @@ function buildFaculty() {
         <div class="fac-avatar" style="background:${f.c}">${f.i}</div>
         <div>
           <div class="fac-name">${f.name}</div>
-          <div class="fac-dept">${f.dept} Dept.</div>
+          <div class="fac-dept">${f} SoCSE</div>
         </div>
       </div>
       <div class="fac-stats-grid">
