@@ -74,7 +74,7 @@ let state = {
 };
 
 // ══════════════════════════════════════════════
-// DATA — 40 Projects, 10 Faculty
+// DATA — 26 Projects, 10 Faculty
 // ══════════════════════════════════════════════
 const DOMAINS = ['AI/ML','Web Dev','IoT','Cybersecurity','Data Science','Blockchain','Mobile','Cloud'];
 
@@ -243,8 +243,8 @@ async function handleOAuthCallback() {
 function startDemoMode() {
   // Demo user — no real GitHub auth
   state.user = {
-    login: 'coordinator',
-    name: 'Dr. Basavaraj (Demo)',
+    login: 'Coordinator',
+    name: 'Dr. Basavaraj Patil(Demo)',
     avatar_url: 'https://avatars.githubusercontent.com/u/0',
     html_url: 'https://github.com'
   };
@@ -743,7 +743,7 @@ function buildDashboard() {
     { icon:'ti-message-2',  c:'var(--blue)',    msg:'P-12 reviewed by Dr. Ramesh Kumar',   t:'1h ago' },
     { icon:'ti-alert',      c:'var(--amber)',   msg:'Assignment 4 deadline tomorrow',      t:'3h ago' },
     { icon:'ti-brand-github',c:'var(--accent)', msg:'P-40 repo created for DroneAI',      t:'4h ago' },
-    { icon:'ti-user-plus',  c:'var(--purple)',  msg:'Prof. Nandini Iyer joined program',   t:'6h ago' },
+    { icon:'ti-user-plus',  c:'var(--purple)',  msg:'Prof. Professor joined program',   t:'6h ago' },
   ];
   document.getElementById('recent-act').innerHTML = acts.map(a => `
     <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
@@ -763,8 +763,8 @@ function buildProjects() {
 
   document.getElementById('proj-list').innerHTML = list.map(p => {
     const badge = p.status === 'On Track' ? 'badge-green' : p.status === 'Needs Review' ? 'badge-amber' : 'badge-red';
-    const wBadge = p.w7 === 'Submitted' ? 'badge-green' : 'badge-gray';
-    const ghUrl = p.repoUrl || (state.org ? `https://github.com/${state.org}/${state.prefix}-week-7-report-${p.teamSlug}` : '#');
+    const wBadge = p.w1 === 'Submitted' ? 'badge-green' : 'badge-gray';
+    const ghUrl = p.repoUrl || (state.org ? `https://github.com/${state.org}/${state.prefix}-week-1-report-${p.teamSlug}` : '#');
     return `
     <div class="proj-row">
       <div class="proj-num">${p.id}</div>
@@ -832,7 +832,7 @@ function buildFaculty() {
 // ── Weekly Reports ──
 function buildWeekTabs() {
   const el = document.getElementById('week-tabs');
-  el.innerHTML = Array.from({length:12}, (_,i) => {
+  el.innerHTML = Array.from({length:8}, (_,i) => {
     const w = i + 1;
     return `<button class="wtab ${w===state.currentWeek?'active':''}" onclick="selectWeek(${w})">W${w}</button>`;
   }).join('');
@@ -849,7 +849,7 @@ function buildWeekly() {
   let list = PROJECTS.map(p => {
     const seed = p.id * state.currentWeek;
     const submitted = (seed % 4 !== 0); // deterministic based on project+week
-    const score = submitted ? ((6 + (seed % 40) / 10)).toFixed(1) : '—';
+    const score = submitted ? ((6 + (seed % 26) / 10)).toFixed(1) : '—';
     return { ...p, wsub: submitted ? 'Submitted' : 'Pending', wscore: score };
   });
   if (filter) list = list.filter(p => p.wsub === filter);
@@ -1170,7 +1170,7 @@ function buildNotifications() {
     { icon:'ti-file-upload',    c:'var(--blue)',  msg:'Assignment 4 due tomorrow — 22 teams pending', t:'5h ago' },
     { icon:'ti-check',          c:'var(--accent)',msg:'P-08 Week 7 report reviewed by Dr. Ramesh Kumar', t:'Today 10:30 AM' },
     { icon:'ti-brand-github',   c:'var(--accent)',msg:'3 new commits pushed to intern repos', t:'Today 9:15 AM' },
-    { icon:'ti-user-plus',      c:'var(--purple)',msg:'Prof. Nandini Iyer joined the program', t:'Yesterday' },
+    { icon:'ti-user-plus',      c:'var(--purple)',msg:'Professor joined the program', t:'Yesterday' },
   ];
   document.getElementById('notif-list').innerHTML = notifs.map(n => `
     <div class="notif-item">
