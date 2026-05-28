@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InternTrack — Internship Management Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════ -->
+<div id="login-screen" class="login-screen">
+  <div class="login-bg">
+    <div class="login-grid"></div>
+    <div class="login-glow"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="logo-icon"><i class="ti ti-building-community"></i></span>
+      <span class="logo-text">Intern<span class="accent">Track</span></span>
+    </div>
+    <div class="login-tagline">Internship Monitoring &amp; Management Platform</div>
+    <div class="login-divider"></div>
+    <div class="login-desc">
+      Sign in with your GitHub account to access the dashboard.<br>
+      Faculty and coordinators use their institutional GitHub org account.
+    </div>
+    <button class="btn-github" id="github-login-btn" onclick="initiateGitHubLogin()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      Continue with GitHub
+    </button>
+    <div class="login-note">
+      <i class="ti ti-shield-check"></i>
+      OAuth 2.0 secured · No passwords stored · Read/write repo access only
+    </div>
+    <div id="login-error" class="login-error" style="display:none"></div>
+  </div>
+  <div class="login-footer">
+    InternTrack v2.0 · Built for academic internship programs · 
+    <a href="https://docs.github.com/en/developers/apps/building-oauth-apps" target="_blank">GitHub OAuth Docs</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN APP (hidden until logged in)
+═══════════════════════════════════════════ -->
+<div id="app" class="app" style="display:none">
+
+  <!-- Header -->
+  <header class="hdr">
+    <div class="hdr-left">
+      <div class="logo">
+        <span class="logo-icon-sm"><i class="ti ti-building-community"></i></span>
+        Intern<span class="accent">Track</span>
+      </div>
+      <span class="hdr-pill" id="org-pill">Loading…</span>
+    </div>
+    <div class="hdr-center">
+      <div class="hdr-search">
+        <i class="ti ti-search"></i>
+        <input type="text" placeholder="Search projects, teams, faculty…" id="global-search" oninput="globalSearch(this.value)">
+      </div>
+    </div>
+    <div class="hdr-right">
+      <button class="icon-btn" onclick="openModal('notif-modal')" title="Notifications">
+        <i class="ti ti-bell"></i>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="icon-btn" onclick="openModal('config-modal')" title="GitHub Config">
+        <i class="ti ti-settings"></i>
+      </button>
+      <div class="user-chip" id="user-chip" onclick="toggleUserMenu()">
+        <img id="user-avatar" src="" alt="avatar" width="28" height="28">
+        <span id="user-name">Loading…</span>
+        <i class="ti ti-chevron-down" style="font-size:12px"></i>
+      </div>
+      <div class="user-menu" id="user-menu" style="display:none">
+        <div class="um-item" onclick="window.open('https://github.com','_blank')"><i class="ti ti-brand-github"></i>GitHub Profile</div>
+        <div class="um-item" onclick="openModal('config-modal')"><i class="ti ti-key"></i>API Settings</div>
+        <div class="um-sep"></div>
+        <div class="um-item danger" onclick="logout()"><i class="ti ti-logout"></i>Sign Out</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="nav-group">
+        <div class="nav-item active" data-page="dashboard" onclick="go('dashboard',this)">
+          <i class="ti ti-layout-dashboard"></i><span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-page="projects" onclick="go('projects',this)">
+          <i class="ti ti-folder"></i><span>Projects</span>
+          <span class="nav-badge" id="nb-projects">40</span>
+        </div>
+        <div class="nav-item" data-page="faculty" onclick="go('faculty',this)">
+          <i class="ti ti-users"></i><span>Faculty</span>
+        </div>
+        <div class="nav-item" data-page="weekly" onclick="go('weekly',this)">
+          <i class="ti ti-calendar-week"></i><span>Weekly Reports</span>
+        </div>
+        <div class="nav-item" data-page="assignments" onclick="go('assignments',this)">
+          <i class="ti ti-clipboard-list"></i><span>Assignments</span>
+          <span class="nav-badge danger" id="nb-assigns">7</span>
+        </div>
+        <div class="nav-item" data-page="submissions" onclick="go('submissions',this)">
+          <i class="ti ti-file-upload"></i><span>Submissions</span>
+        </div>
+      </div>
+      <div class="nav-section-label">Analytics</div>
+      <div class="nav-group">
+        <div class="nav-item" data-page="progress" onclick="go('progress',this)">
+          <i class="ti ti-chart-line"></i><span>Progress</span>
+        </div>
+        <div class="nav-item" data-page="github-view" onclick="go('github-view',this)">
+          <i class="ti ti-brand-github"></i><span>GitHub Repos</span>
+        </div>
+        <div class="nav-item" data-page="reports" onclick="go('reports',this)">
+          <i class="ti ti-report"></i><span>Reports</span>
+        </div>
+      </div>
+      <div class="sidebar-foot">
+        <div class="week-indicator">
+          <div class="wi-label">Program Progress</div>
+          <div class="wi-bar"><div class="wi-fill" style="width:58%"></div></div>
+          <div class="wi-text">Week 7 of 12 · 58% complete</div>
+        </div>
+        <div class="qstats">
+          <span class="qs-dot green"></span><b id="qs-ontrack">32</b> on track
+          &nbsp;·&nbsp;
+          <span class="qs-dot amber"></span><b id="qs-warn">6</b> at risk
+          &nbsp;·&nbsp;
+          <span class="qs-dot red"></span><b id="qs-late">2</b> late
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="main-content">
+
+      <!-- ── DASHBOARD ── -->
+      <section class="page active" id="page-dashboard">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Real-time internship overview · <span id="dash-date"></span></div>
+          </div>
+          <button class="btn primary sm" onclick="refreshDashboard()">
+            <i class="ti ti-refresh"></i> Refresh
+          </button>
+        </div>
+        <div class="metrics-row" id="dash-metrics"></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-alert-triangle"></i>Needs Attention</div>
+            <div id="attn-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-bar"></i>Submissions This Week</div>
+            <div id="sub-chart" class="bar-chart-wrap"></div>
+            <div class="chart-note">Daily submission count · Week 7</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-users"></i>Faculty Workload</div>
+            <div id="fac-load"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-activity"></i>Recent Activity</div>
+            <div id="recent-act"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PROJECTS ── -->
+      <section class="page" id="page-projects">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">All Projects</div>
+            <div class="page-sub">40 internship projects across 8 domains</div>
+          </div>
+          <button class="btn primary sm" onclick="openModal('new-project-modal')">
+            <i class="ti ti-plus"></i> Add Project
+          </button>
+        </div>
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="ti ti-search"></i>
+            <input type="text" placeholder="Search projects…" oninput="filterProjects(this.value)" id="proj-search">
+          </div>
+          <select onchange="filterByStatus(this.value)" id="status-filter">
+            <option value="">All Status</option>
+            <option>On Track</option>
+            <option>Needs Review</option>
+            <option>Delayed</option>
+          </select>
+          <select onchange="filterByFaculty(this.value)" id="faculty-filter">
+            <option value="">All Faculty</option>
+          </select>
+          <select onchange="filterByDomain(this.value)">
+            <option value="">All Domains</option>
+            <option>AI/ML</option><option>Web Dev</option><option>IoT</option>
+            <option>Cybersecurity</option><option>Data Science</option>
+            <option>Blockchain</option><option>Mobile</option><option>Cloud</option>
+          </select>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="proj-table-hdr">
+            <div>#</div><div>Project / Domain</div><div>Faculty</div>
+            <div>Progress</div><div>Status</div><div>W7 Report</div><div>GitHub</div><div>Actions</div>
+          </div>
+          <div id="proj-list"></div>
+        </div>
+        <div id="proj-count" class="table-footer"></div>
+      </section>
+
+      <!-- ── FACULTY ── -->
+      <section class="page" id="page-faculty">
+        <div class="page-hdr">
+          <div class="page-title">Faculty Members</div>
+          <div class="page-sub">12 faculty guiding 40 projects</div>
+        </div>
+        <div class="faculty-grid" id="fac-grid"></div>
+      </section>
+
+      <!-- ── WEEKLY REPORTS ── -->
+      <section class="page" id="page-weekly">
+        <div class="page-hdr">
+          <div class="page-title">Weekly Reports</div>
+          <div class="page-sub">Track week-by-week progress · Submit &amp; review reports via GitHub</div>
+        </div>
+        <div class="week-controls">
+          <div class="week-tabs" id="week-tabs"></div>
+          <div style="display:flex;gap:8px">
+            <select id="weekly-filter" onchange="buildWeekly()">
+              <option value="">All</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Pending">Pending</option>
+            </select>
+            <button class="btn sm" onclick="remindAllPending()">
+              <i class="ti ti-send"></i> Remind Pending
+            </button>
+          </div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="weekly-table-hdr">
+            <div>#</div><div>Project</div><div>Faculty</div>
+            <div>Report Status</div><div>Score</div><div>GitHub Link</div><div>Actions</div>
+          </div>
+          <div id="weekly-list"></div>
+        </div>
+        <div id="weekly-stats" class="table-footer"></div>
+      </section>
+
+      <!-- ── ASSIGNMENTS ── -->
+      <section class="page" id="page-assignments">
+        <div class="page-hdr">
+          <div class="page-title">Assignments &amp; Tasks</div>
+          <div class="page-sub">Manage GitHub Classroom assignments · Track submissions</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="filter-tabs" id="assign-tabs"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn sm" onclick="syncFromClassroom()">
+              <i class="ti ti-brand-github"></i> Sync Classroom
+            </button>
+            <button class="btn primary sm" onclick="openModal('new-assign-modal')">
+              <i class="ti ti-plus"></i> New Assignment
+            </button>
+          </div>
+        </div>
+        <div id="assign-list"></div>
+      </section>
+
+      <!-- ── SUBMISSIONS ── -->
+      <section class="page" id="page-submissions">
+        <div class="page-hdr">
+          <div class="page-title">Submissions Inbox</div>
+          <div class="page-sub">All GitHub repo submissions · Real-time from GitHub API</div>
+        </div>
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="ti ti-search"></i>
+            <input type="text" placeholder="Search submissions…" oninput="filterSubs(this.value)">
+          </div>
+          <select onchange="filterSubType(this.value)">
+            <option value="">All Types</option>
+            <option>Weekly Report</option><option>Assignment</option>
+            <option>Presentation</option><option>Final Report</option>
+          </select>
+          <button class="btn sm" onclick="fetchGitHubSubmissions()">
+            <i class="ti ti-refresh"></i> Fetch from GitHub
+          </button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="sub-table-hdr">
+            <div>File / Commit</div><div>Project</div><div>Type</div>
+            <div>Submitted</div><div>Committed By</div><div>Status</div><div>Action</div>
+          </div>
+          <div id="sub-list"></div>
+        </div>
+      </section>
+
+      <!-- ── GITHUB REPOS VIEW ── -->
+      <section class="page" id="page-github-view">
+        <div class="page-hdr">
+          <div class="page-title">GitHub Repositories</div>
+          <div class="page-sub">All classroom repos linked to this program</div>
+        </div>
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="ti ti-search"></i>
+            <input type="text" placeholder="Search repos…">
+          </div>
+          <button class="btn primary sm" onclick="fetchOrgRepos()">
+            <i class="ti ti-brand-github"></i> Fetch Org Repos
+          </button>
+        </div>
+        <div id="repo-grid" class="repo-grid"></div>
+        <div id="repo-status" class="status-msg"></div>
+      </section>
+
+      <!-- ── PROGRESS ── -->
+      <section class="page" id="page-progress">
+        <div class="page-hdr">
+          <div class="page-title">Progress Analytics</div>
+          <div class="page-sub">Completion rates, domain breakdown, performance trends</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i>Week-by-Week Completion (All 40 Projects)</div>
+          <div id="prog-chart" class="bar-chart-wrap" style="height:140px"></div>
+          <div class="chart-note">Avg completion % · W8–W12 are projected</div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-title"><i class="ti ti-layout-distribute-vertical"></i>Domain Breakdown</div><div id="domain-bars"></div></div>
+          <div class="card"><div class="card-title"><i class="ti ti-trophy"></i>Top 5 Projects</div><div id="top-projs"></div></div>
+        </div>
+      </section>
+
+      <!-- ── REPORTS ── -->
+      <section class="page" id="page-reports">
+        <div class="page-hdr">
+          <div class="page-title">Generate Reports</div>
+          <div class="page-sub">Export summaries · Push reports to GitHub as markdown</div>
+        </div>
+        <div class="reports-grid" id="reports-grid"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     MODALS
+══════════════════════════════════ -->
+<div class="overlay" id="modal-overlay" onclick="overlayClick(event)">
+
+  <!-- Notifications -->
+  <div class="modal" id="notif-modal">
+    <div class="modal-hdr">Notifications <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div id="notif-list"></div>
+  </div>
+
+  <!-- GitHub Config -->
+  <div class="modal wide" id="config-modal">
+    <div class="modal-hdr">GitHub Configuration <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="config-grid">
+      <div>
+        <div class="form-label">GitHub Organization Name</div>
+        <input type="text" id="cfg-org" placeholder="e.g. my-university-cs" class="form-input">
+        <div class="form-hint">Your GitHub Classroom organization slug</div>
+      </div>
+      <div>
+        <div class="form-label">Personal Access Token (PAT)</div>
+        <div style="position:relative">
+          <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="form-input">
+          <button class="token-toggle" onclick="toggleTokenVis()"><i class="ti ti-eye" id="eye-icon"></i></button>
+        </div>
+        <div class="form-hint">Needs <code>repo</code>, <code>read:org</code> scopes · Stored in sessionStorage only</div>
+      </div>
+      <div>
+        <div class="form-label">Classroom Assignment Prefix</div>
+        <input type="text" id="cfg-prefix" placeholder="e.g. intern-2025" class="form-input">
+        <div class="form-hint">Repos will be named {prefix}-{assignment}-{team}</div>
+      </div>
+      <div>
+        <div class="form-label">OAuth App Client ID</div>
+        <input type="text" id="cfg-client-id" placeholder="Ov23liXXXXXXXXXXXXXX" class="form-input">
+        <div class="form-hint">From your GitHub OAuth App settings</div>
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <div class="form-label">OAuth Callback URL (set this in your GitHub OAuth App)</div>
+      <div class="code-block" id="callback-url-display"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+      <button class="btn" onclick="testGitHubConnection()"><i class="ti ti-plug"></i> Test Connection</button>
+      <button class="btn primary" onclick="saveConfig()"><i class="ti ti-check"></i> Save Config</button>
+    </div>
+    <div id="cfg-status" class="cfg-status" style="display:none"></div>
+  </div>
+
+  <!-- New Assignment -->
+  <div class="modal" id="new-assign-modal">
+    <div class="modal-hdr">New Assignment <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-label">Assignment Title</div>
+    <input type="text" id="na-title" placeholder="e.g. Week 8 Progress Report" class="form-input">
+    <div class="form-row">
+      <div>
+        <div class="form-label">Due Date</div>
+        <input type="date" id="na-due" class="form-input">
+      </div>
+      <div>
+        <div class="form-label">Type</div>
+        <select id="na-type" class="form-input">
+          <option>Weekly Report</option><option>Presentation</option>
+          <option>Code Submission</option><option>Quiz</option><option>Final Report</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <div class="form-label">Assign To</div>
+        <select id="na-assign" class="form-input">
+          <option>All Projects</option><option>AI/ML Domain</option>
+          <option>Web Dev Domain</option><option>Specific Team</option>
+        </select>
+      </div>
+      <div>
+        <div class="form-label">GitHub Classroom Slug</div>
+        <input type="text" id="na-slug" placeholder="week-8-report" class="form-input">
+      </div>
+    </div>
+    <div class="form-label">Description</div>
+    <textarea id="na-desc" rows="3" class="form-input" placeholder="What is expected from intern teams…" style="resize:vertical"></textarea>
+    <div class="form-label">Create GitHub Classroom Assignment?</div>
+    <label class="toggle-wrap">
+      <input type="checkbox" id="na-create-gh" checked>
+      <span class="toggle-label">Auto-create repos in GitHub Classroom org</span>
+    </label>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="createAssignment()"><i class="ti ti-check"></i> Create</button>
+    </div>
+  </div>
+
+  <!-- Submit Report -->
+  <div class="modal wide" id="submit-modal">
+    <div class="modal-hdr">Submit to GitHub <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-row">
+      <div>
+        <div class="form-label">Project / Team</div>
+        <select id="sm-team" class="form-input"></select>
+      </div>
+      <div>
+        <div class="form-label">Assignment</div>
+        <select id="sm-assign" class="form-input"></select>
+      </div>
+    </div>
+    <div class="form-label">Report / Submission Content</div>
+    <textarea id="sm-content" rows="10" class="form-input" style="font-family:'DM Mono',monospace;font-size:12px;resize:vertical"
+      placeholder="# Week N Progress Report&#10;&#10;## What was completed&#10;- ...&#10;&#10;## Blockers&#10;- ...&#10;&#10;## Plan for next week&#10;- ..."></textarea>
+    <div class="form-label">Commit Message</div>
+    <input type="text" id="sm-commit" class="form-input" placeholder="feat: Week 7 progress report submission">
+    <div id="submit-status" class="cfg-status" style="display:none"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" id="submit-btn" onclick="submitToGitHub()">
+        <i class="ti ti-brand-github"></i> Push to GitHub
+      </button>
+    </div>
+  </div>
+
+  <!-- View Submission -->
+  <div class="modal wide" id="view-sub-modal">
+    <div class="modal-hdr" id="view-sub-title">Submission <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div id="view-sub-content" class="sub-viewer"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button class="btn" onclick="closeModal()">Close</button>
+      <button class="btn primary" id="view-gh-link" onclick=""><i class="ti ti-external-link"></i> View on GitHub</button>
+    </div>
+  </div>
+
+  <!-- New Project -->
+  <div class="modal" id="new-project-modal">
+    <div class="modal-hdr">Add Project <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div class="form-row">
+      <div><div class="form-label">Project Name</div><input type="text" id="np-name" class="form-input" placeholder="e.g. SmartFarm AI"></div>
+      <div><div class="form-label">Domain</div>
+        <select id="np-domain" class="form-input">
+          <option>AI/ML</option><option>Web Dev</option><option>IoT</option>
+          <option>Cybersecurity</option><option>Data Science</option>
+          <option>Blockchain</option><option>Mobile</option><option>Cloud</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div><div class="form-label">Team Slug (GitHub)</div><input type="text" id="np-slug" class="form-input" placeholder="e.g. team-smartfarm"></div>
+      <div><div class="form-label">Faculty</div>
+        <select id="np-faculty" class="form-input"></select>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="addProject()"><i class="ti ti-check"></i> Add Project</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
