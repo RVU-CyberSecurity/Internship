@@ -15,7 +15,7 @@
 <!-- ═══════════════════════════════════════════
      LOGIN SCREEN
 ═══════════════════════════════════════════ -->
-<div id="login-screen" class="login-screen">
+<div id="login-screen" class="login-screen" style="display:none">  //added style="display:none"
   <div class="login-bg">
     <div class="login-grid"></div>
     <div class="login-glow"></div>
@@ -52,7 +52,7 @@
 <!-- ═══════════════════════════════════════════
      MAIN APP (hidden until logged in)
 ═══════════════════════════════════════════ -->
-<div id="app" class="app" style="display:none">
+<div id="app" class="app" style="display:block">   //none to block
 
   <!-- Header -->
   <header class="hdr">
@@ -517,6 +517,90 @@
 </div>
 
 <div class="toast" id="toast"></div>
+//addind script
+<script>
+
+// =====================================
+// INTERNTRACK LOGIN BYPASS MODE
+// =====================================
+
+localStorage.setItem('interntrack_loggedin', 'true');
+
+window.currentUser = {
+  name: 'RVU Internship Coordinator',
+  login: 'rvu-cybersecurity',
+  avatar_url: 'https://avatars.githubusercontent.com/u/9919?s=200&v=4',
+  email: 'coordinator@rvu.edu.in',
+  role: 'Coordinator'
+};
+
+window.githubUser = window.currentUser;
+
+window.CONFIG = {
+  OAUTH_CLIENT_ID: 'Ov23liJdCE3Ma7QssY4g',
+  GH_API: 'https://api.github.com',
+  ORG: 'rvu-cybersecurity',
+  REPO_PREFIX: 'intern2025',
+  REDIRECT_URI: 'https://rvu-cybersecurity.github.io/Internship/index.html'
+};
+
+// =====================================
+// LOAD APP DIRECTLY
+// =====================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  const loginScreen = document.getElementById('login-screen');
+  if (loginScreen) {
+    loginScreen.style.display = 'none';
+  }
+
+  const app = document.getElementById('app');
+  if (app) {
+    app.style.display = 'block';
+  }
+
+  const userName = document.getElementById('user-name');
+  if (userName) {
+    userName.textContent = currentUser.name;
+  }
+
+  const userAvatar = document.getElementById('user-avatar');
+  if (userAvatar) {
+    userAvatar.src = currentUser.avatar_url;
+  }
+
+  const orgPill = document.getElementById('org-pill');
+  if (orgPill) {
+    orgPill.textContent = 'RVU Cybersecurity Internship 2025';
+  }
+
+  const dashDate = document.getElementById('dash-date');
+  if (dashDate) {
+    dashDate.textContent = new Date().toDateString();
+  }
+
+  console.log('InternTrack Loaded Successfully');
+});
+
+// =====================================
+// BYPASS AUTH FUNCTIONS
+// =====================================
+
+function initiateGitHubLogin() {
+  toastMsg('GitHub OAuth bypassed for demo mode');
+}
+
+function logout() {
+  toastMsg('Logout disabled in demo mode');
+}
+
+function checkLogin() {
+  const loginScreen = document.getElementById('login-screen');
+  const app = document.getElementById('app');
+
+  if (loginScreen) loginScreen.style.display = 'none';
+</script>
 
 <script src="app.js"></script>
 </body>
