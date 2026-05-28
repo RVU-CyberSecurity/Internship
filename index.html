@@ -52,7 +52,7 @@
 <!-- ═══════════════════════════════════════════
      MAIN APP (hidden until logged in)
 ═══════════════════════════════════════════ -->
-<div id="app" class="app" style="display:block">   //none to block
+<div id="app" class="app" style="display:block"> 
 
   <!-- Header -->
   <header class="hdr">
@@ -100,7 +100,7 @@
         </div>
         <div class="nav-item" data-page="projects" onclick="go('projects',this)">
           <i class="ti ti-folder"></i><span>Projects</span>
-          <span class="nav-badge" id="nb-projects">40</span>
+          <span class="nav-badge" id="nb-projects">26</span>
         </div>
         <div class="nav-item" data-page="faculty" onclick="go('faculty',this)">
           <i class="ti ti-users"></i><span>Faculty</span>
@@ -132,7 +132,7 @@
         <div class="week-indicator">
           <div class="wi-label">Program Progress</div>
           <div class="wi-bar"><div class="wi-fill" style="width:58%"></div></div>
-          <div class="wi-text">Week 7 of 12 · 58% complete</div>
+          <div class="wi-text">Week 0 of 8 · 0% complete</div>
         </div>
         <div class="qstats">
           <span class="qs-dot green"></span><b id="qs-ontrack">32</b> on track
@@ -167,7 +167,7 @@
           <div class="card">
             <div class="card-title"><i class="ti ti-chart-bar"></i>Submissions This Week</div>
             <div id="sub-chart" class="bar-chart-wrap"></div>
-            <div class="chart-note">Daily submission count · Week 7</div>
+            <div class="chart-note"> Daily submission count · Week 0</div>
           </div>
           <div class="card">
             <div class="card-title"><i class="ti ti-users"></i>Faculty Workload</div>
@@ -185,7 +185,7 @@
         <div class="page-hdr">
           <div>
             <div class="page-title">All Projects</div>
-            <div class="page-sub">40 internship projects across 8 domains</div>
+            <div class="page-sub"> Internship projects across Cybersecurity domains</div>
           </div>
           <button class="btn primary sm" onclick="openModal('new-project-modal')">
             <i class="ti ti-plus"></i> Add Project
@@ -226,7 +226,7 @@
       <section class="page" id="page-faculty">
         <div class="page-hdr">
           <div class="page-title">Faculty Members</div>
-          <div class="page-sub">12 faculty guiding 40 projects</div>
+          <div class="page-sub"> Faculty guiding 26 projects</div>
         </div>
         <div class="faculty-grid" id="fac-grid"></div>
       </section>
@@ -337,7 +337,7 @@
         <div class="card">
           <div class="card-title"><i class="ti ti-chart-bar"></i>Week-by-Week Completion (All 40 Projects)</div>
           <div id="prog-chart" class="bar-chart-wrap" style="height:140px"></div>
-          <div class="chart-note">Avg completion % · W8–W12 are projected</div>
+          <div class="chart-note">Avg completion % · weekwise projected</div>
         </div>
         <div class="grid-2">
           <div class="card"><div class="card-title"><i class="ti ti-layout-distribute-vertical"></i>Domain Breakdown</div><div id="domain-bars"></div></div>
@@ -530,7 +530,7 @@ window.currentUser = {
   name: 'RVU Internship Coordinator',
   login: 'rvu-cybersecurity',
   avatar_url: 'https://avatars.githubusercontent.com/u/9919?s=200&v=4',
-  email: 'coordinator@rvu.edu.in',
+  email: 'basavarajp@rvu.edu.in',
   role: 'Coordinator'
 };
 
@@ -540,7 +540,7 @@ window.CONFIG = {
   OAUTH_CLIENT_ID: 'Ov23liJdCE3Ma7QssY4g',
   GH_API: 'https://api.github.com',
   ORG: 'rvu-cybersecurity',
-  REPO_PREFIX: 'intern2025',
+  REPO_PREFIX: 'intern2026',
   REDIRECT_URI: 'https://rvu-cybersecurity.github.io/Internship/index.html'
 };
 
