@@ -11,12 +11,32 @@
 // ══════════════════════════════════════════════
 const CONFIG = {
   // Your GitHub OAuth App Client ID
-  // Create one at: https://github.com/settings/developers
-  OAUTH_CLIENT_ID: localStorage.getItem('gh_client_id') || 'YOUR_GITHUB_OAUTH_CLIENT_ID',
+  // GitHub OAuth App Client ID
+  OAUTH_CLIENT_ID: localStorage.getItem('gh_client_id') || 'Ov23liJdCE3Ma7QssY4g',
+
+  // OAuth backend/token exchange endpoint
+  // Replace this with your Netlify/Vercel backend URL
+  OAUTH_PROXY_URL: 'https://rvu-interntrack.netlify.app/.netlify/functions/authenticate',
+
+  // GitHub API
+  GH_API: 'https://api.github.com',
+
+  // GitHub Organization
+  ORG: localStorage.getItem('gh_org') || 'rvu-cybersecurity',
+
+  // Repository prefix
+  REPO_PREFIX: localStorage.getItem('gh_prefix') || 'Internship',
+
+  // GitHub OAuth callback URL
+  REDIRECT_URI: 'https://rvu-cybersecurity.github.io/Internship/index.html'
+};
+
+/* // Create one at: https://github.com/settings/developers
+  OAUTH_CLIENT_ID: localStorage.getItem('gh_client_id') || 'Ov23liJdCE3Ma7QssY4g',
 
   // Your GitHub OAuth App Client Secret (⚠️ only safe in backend/Netlify Function)
   // For pure frontend demo, we use the token exchange proxy below
-  OAUTH_PROXY_URL: 'https://github-oauth-proxy.your-domain.com/authenticate',
+  OAUTH_PROXY_URL: https://rvu-cybersecurity.github.io/Internship/index.html,  //'https://github-oauth-proxy.your-domain.com/authenticate'
   // ↑ Deploy https://github.com/prose/gatekeeper or use Netlify Functions
 
   // GitHub API base
@@ -31,6 +51,8 @@ const CONFIG = {
   // Callback URL — this page's URL
   REDIRECT_URI: window.location.origin + window.location.pathname
 };
+*/
+
 
 // ══════════════════════════════════════════════
 // STATE
@@ -52,7 +74,7 @@ let state = {
 };
 
 // ══════════════════════════════════════════════
-// DATA — 40 Projects, 12 Faculty
+// DATA — 40 Projects, 10 Faculty
 // ══════════════════════════════════════════════
 const DOMAINS = ['AI/ML','Web Dev','IoT','Cybersecurity','Data Science','Blockchain','Mobile','Cloud'];
 
