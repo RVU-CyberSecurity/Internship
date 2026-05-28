@@ -79,16 +79,16 @@ let state = {
 const DOMAINS = ['AI/ML','Web Dev','IoT','Cybersecurity','Data Science','Blockchain','Mobile','Cloud','Quantum'];
 
 const FACULTY = [
-{name:'Sunilkumar J',dept:'Cybersecurity',c:'#185FA5',i:'SJ',n:5},
-{name:'Evlin Vidyu Latha P',dept:'Cybersecurity',c:'#0F6E56',i:'EP',n:4},
-{name:'Dr. Manish Kumar',dept:'Cybersecurity',c:'#854F0B',i:'MK',n:3},
+{name:'Sunilkumar J',dept:'Cybersecurity',c:'#185FA5',i:'SJ',n:4},
+{name:'Evlin Vidyu Latha P',dept:'Cybersecurity',c:'#0F6E56',i:'EP',n:3},
+{name:'Dr. Manish Kumar',dept:'Cybersecurity',c:'#854F0B',i:'MK',n:4},
 {name:'Dr.Sarasvathi V',dept:'Cybersecurity',c:'#A32D2D',i:'SV',n:4},
-{name:'A V Amruthesh Bhat',dept:'Cybersecurity',c:'#533AB7',i:'AB',n:3},
-{name:'J. Cynthia',dept:'Cybersecurity',c:'#3B6D11',i:'JC',n:3},
-{name:'Dr. Ishita Chakraborty',dept:'Cybersecurity',c:'#993C1D',i:'IC',n:4},
+{name:'A V Amruthesh Bhat',dept:'Cybersecurity',c:'#533AB7',i:'AB',n:2},
+{name:'J. Cynthia',dept:'Cybersecurity',c:'#3B6D11',i:'JC',n:1},
+{name:'Dr. Ishita Chakraborty',dept:'Cybersecurity',c:'#993C1D',i:'IC',n:2},
 {name:'Dr Basavaraj Patil',dept:'Cybersecurity',c:'#185FA5',i:'BP',n:3},
-{name:'Sheba Pari N',dept:'Cybersecurity',c:'#993556',i:'SP',n:4},
-{name:'Dr. Saliha Bathool',dept:'Cybersecurity',c:'#5F5E5A',i:'SB',n:4}
+{name:'Sheba Pari N',dept:'Cybersecurity',c:'#993556',i:'SP',n:3},
+{name:'Dr. Saliha Bathool',dept:'Cybersecurity',c:'#5F5E5A',i:'SB',n:1}
 ];
 
 const PROJECTS = [
@@ -118,7 +118,23 @@ const PROJECTS = [
 {id:24,name:'Network Traffic Anomaly Detection & SIEM Integration for Campus LAN',faculty:'Sheba Pari N',domain:'Cybersecurity',status:'On Track',progress:80,w7:'Submitted'},
 {id:25,name:'Neural Network-Assisted Key Rate Estimation in Noisy QKD Channels',faculty:'A V Amruthesh Bhat',domain:'Quantum',status:'On Track',progress:82,w7:'Submitted'},
 {id:26,name:'Secure Routing Protocol for IoT Networks Using Lightweight Cryptography',faculty:'Dr. Ishita Chakraborty',domain:'IoT',status:'On Track',progress:73,w7:'Pending'}
-];
+].map((p,i)=>{
+  const f = FACULTY.find(x=>x.name===p.faculty);
+  const slug = p.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  return {
+    id:i+1,
+    name:p.name,
+    faculty:p.faculty,
+    facInit:f.i,
+    facColor:f.c,
+    domain:p.domain,
+    progress:p.progress,
+    status:p.status,
+    w1:p.w1,
+    teamSlug:`team-${slug}`,
+    repoUrl:''
+  };
+});
 
 const STATUSES = ['On Track','On Track','On Track','On Track','Needs Review','Delayed'];
 
