@@ -120,7 +120,7 @@ const PROJECTS = [
 {id:26,name:'Secure Routing Protocol for IoT Networks Using Lightweight Cryptography',faculty:'Dr. Ishita Chakraborty',domain:'IoT',status:'On Track',progress:73,w7:'Pending'}
 ].map((p,i)=>{
   const f = FACULTY.find(x=>x.name===p.faculty);
-  const slug = p.id.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const slug = p.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
   return {
     id:i+1,
     name:p.name,
