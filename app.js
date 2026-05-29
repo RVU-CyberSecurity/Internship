@@ -119,8 +119,8 @@ const PROJECTS = [
 {id:25,name:'Neural Network-Assisted Key Rate Estimation in Noisy QKD Channels',faculty:'A V Amruthesh Bhat',domain:'Quantum',status:'On Track',progress:82,w7:'Submitted'},
 {id:26,name:'Secure Routing Protocol for IoT Networks Using Lightweight Cryptography',faculty:'Dr. Ishita Chakraborty',domain:'IoT',status:'On Track',progress:73,w7:'Pending'}
 ].map((p,i)=>{
-  const f = FACULTY.find(x=>x.name===p.faculty);
-  const slug = p.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const f = FACULTY.find(x=>x.id===p.faculty);
+  const slug = p.id.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
   return {
     id:i+1,
     name:p.name,
