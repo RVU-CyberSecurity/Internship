@@ -419,7 +419,7 @@ async function submitToGitHub() {
     await delay(1200);
     const proj = PROJECTS.find(p => p.teamSlug === teamSlug);
     if (proj) { proj.w7 = 'Submitted'; buildWeekly(); buildProjects(); }
-    const sub = { file:'report.md', proj:`P-${proj?.id||'?'}`, projName:proj?.name||id, type:'Weekly Report', date:new Date().toISOString(), by:`@${state.user.login}`, st:'Pending', commitUrl:'', content };
+    const sub = { file:'report.md', proj:`P-${proj?.id||'?'}`, projName:proj?.name||teamSlug, type:'Weekly Report', date:new Date().toISOString(), by:`@${state.user.login}`, st:'Pending', commitUrl:'', content };
     SAMPLE_SUBS.unshift(sub);
     buildSubmissions();
     showStatus('submit-status', 'success', '✓ Submitted successfully (demo mode)');
@@ -496,7 +496,7 @@ async function fetchGitHubSubmissions() {
 
   // Fetch latest commit on each tracked project repo
   for (const proj of PROJECTS.slice(0, 10)) { // limit for demo
-    const repo = `${state.prefix}-week-7-report-${proj.id}`;
+    const repo = `${state.prefix}-week-7-report-${proj.teamSlug}`;
     try {
       const res = await ghFetch(`/repos/${state.org}/${repo}/commits?per_page=1`);
       if (res.ok) {
@@ -781,7 +781,7 @@ function buildProjects() {
   document.getElementById('proj-list').innerHTML = list.map(p => {
     const badge = p.status === 'On Track' ? 'badge-green' : p.status === 'Needs Review' ? 'badge-amber' : 'badge-red';
     const wBadge = p.w1 === 'Submitted' ? 'badge-green' : 'badge-gray';
-    const ghUrl = p.repoUrl || (state.org ? `https://github.com/${state.org}/${state.prefix}-week-1-report-${p.id}` : '#');
+    const ghUrl = p.repoUrl || (state.org ? `https://github.com/${state.org}/${state.prefix}-week-1-report-${p.teamSlug}` : '#');
     return `
     <div class="proj-row">
       <div class="proj-num">${p.id}</div>
@@ -821,7 +821,7 @@ function filterByDomain(d)  { state.projDomainFilter = d; buildProjects(); }
 function openSubmitFor(id) {
   const proj = PROJECTS.find(p => p.id === id);
   if (proj) {
-    document.getElementById('sm-team').value = proj.id;
+    document.getElementById('sm-team').value = proj.teamSlug;
   }
   openModal('submit-modal');
 }
@@ -874,7 +874,7 @@ function buildWeekly() {
   const ghBase = state.org ? `https://github.com/${state.org}` : 'https://github.com';
 
   document.getElementById('weekly-list').innerHTML = list.slice(0, 25).map(p => {
-    const repoLink = `${ghBase}/${state.prefix}-week-${state.currentWeek}-report-${p.id}`;
+    const repoLink = `${ghBase}/${state.prefix}-week-${state.currentWeek}-report-${p.teamSlug}`;
     return `
     <div class="weekly-row">
       <div class="proj-num">${p.id}</div>
@@ -893,7 +893,7 @@ function buildWeekly() {
       <div style="display:flex;gap:4px">
         ${p.wsub==='Submitted'
           ? `<button class="btn sm" onclick="viewSubmission(${p.id})">Review</button>`
-          : `<button class="btn sm warn" onclick="toast('Reminder sent to ${p.id}')">Remind</button>`}
+          : `<button class="btn sm warn" onclick="toast('Reminder sent to ${p.name}')">Remind</button>`}
       </div>
     </div>`;
   }).join('');
@@ -913,7 +913,7 @@ function viewSubmission(projId) {
     <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>`;
   document.getElementById('view-sub-content').textContent = content;
   document.getElementById('view-gh-link').onclick = () => {
-    const url = sub?.commitUrl || `https://github.com/${state.org||'demo'}/${state.prefix}-week-${state.currentWeek}-report-${proj?.id}`;
+    const url = sub?.commitUrl || `https://github.com/${state.org||'demo'}/${state.prefix}-week-${state.currentWeek}-report-${proj?.teamSlug}`;
     window.open(url, '_blank');
   };
   openModal('view-sub-modal');
